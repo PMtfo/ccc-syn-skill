@@ -1,4 +1,4 @@
-name: lint
+name: ci
 
 on:
   push:
@@ -6,8 +6,11 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
-  py-compile:
+  test-and-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,8 +23,10 @@ jobs:
         run: |
           python -m py_compile $(git ls-files '*.py')
 
-      - name: Ruff (best-effort, non-blocking)
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Ruff
         run: |
-          pip install ruff
-          # 只做语法/未用导入等基础检查,不做严格风格;失败不阻断
-          ruff check --select=E9,F63,F7,F82 . || true
+          python -m pip install --disable-pip-version-check ruff
+          ruff check --select=E9,F63,F7,F82 .
