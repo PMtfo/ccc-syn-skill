@@ -196,7 +196,7 @@ def is_noise_conversation(turns) -> bool:
         return True
     return False
 
-SKILL_SCRIPTS = Path.home() / ".cursor" / "agent-shared" / "skills" / "ccc-syn-skill" / "scripts"
+SKILL_SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SKILL_SCRIPTS))
 import codex_import as ci  # noqa: E402
 
