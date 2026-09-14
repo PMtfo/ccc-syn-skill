@@ -175,3 +175,36 @@ ccc-syn-skill/
 ## 引用与起源
 
 本 skill 基于本人 Cursor / Claude Code / Codex 三端日常使用习惯沉淀,核心是利用 Codex `externalAgentConfig/import` RPC 把外部会话(Cursor 项目对话、Claude Code CLI 对话)伪装成 Codex 原生会话写入侧栏。所有读写都是本机数据,无外部 API 调用。
+
+## 仓库结构
+
+当前受版本控制的文件共 19 个，全部为 Python 标准库脚本与文档，`requirements.txt` 为空清单（无第三方依赖）。
+
+```
+ccc-syn-skill/
+├── SKILL.md                  三端 Skill 主文件（7 步向导）
+├── README.md
+├── requirements.txt          仅标准库，空清单
+├── scripts/             4
+│   ├── cursor_transcript.py       导出 Cursor 对话
+│   ├── claude_transcript.py       导出 Claude Code 对话
+│   ├── codex_transcript.py        导出 Codex 对话
+│   └── codex_import.py            旧版直写 SQLite，已退役
+├── codex-import/        4
+│   ├── codex-planB-run.py         ★ 唯一推荐的 Codex 导入入口
+│   ├── codex-planB-claude-bridge.py
+│   ├── codex-appserver-rpc.py
+│   └── README.md
+├── integrations/        3
+│   ├── claude/CLAUDE-handoff-snippet.md
+│   ├── claude/cursor-transcript.md
+│   └── cursor/claude-transcript-handoff.mdc
+├── tests/               3    test_claude_transcript / test_codex_import /
+│                             test_planb_dry_run
+├── .github/workflows/lint.yml
+└── .gitignore
+```
+
+导入 Codex 只走 `codex-import/codex-planB-run.py`；`scripts/codex_import.py` 直写 SQLite 的旧路径已退役，保留仅为追溯，不作为当前入口。
+
+本仓库同时以副本形式内嵌在 `codex-snapshot-skill` 的 `skills/ccc-syn-skill/` 下，两处内容应保持一致。
