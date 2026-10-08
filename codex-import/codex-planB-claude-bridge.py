@@ -63,7 +63,7 @@ def clean_text(text: str) -> str:
     text = re.sub(r"Replied message \(untrusted, for context\):\s*", "", text)
     text = re.sub(r"(?:Sender|Conversation info) \(untrusted metadata\):\s*", "", text)
     text = re.sub(r"^(?:\[[^\]]*\]\s*)+", "", text)  # leading [message_id:...] / [Thu ...] blocks
-    text = re.sub(r"^[^\s:：\n]{1,12}[:：]\s*(?!//)(?=\S)", "", text)  # leading "Sender: " sender name (keep url schemes)
+    text = re.sub(r"^[^\s:：\n]{1,12}[:：]\s*(?!//)(?=\S)", "", text)  # leading "Sender: " prefix (keep url schemes)
     text = re.sub(r"\bo[un]_[0-9a-z]{20,}\b", "", text)  # stray open_id / message_id tokens
     text = re.sub(r"\bom_[0-9a-z]{12,}\b", "", text)
     text = re.sub(r"```[a-zA-Z]*\s.*?```", " ", text, flags=re.S)
